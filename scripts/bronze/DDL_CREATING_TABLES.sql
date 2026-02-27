@@ -1,4 +1,30 @@
+/*
+===============================================================================
+Create Bronze Layer Tables
+===============================================================================
+Script Purpose: 
+    This script creates the 'Bronze' schema tables for the Data Warehouse.
+    It drops existing tables if they exist and recreates the structure 
+    to land raw data from CRM and ERP source systems.
+
+Architecture Layer: Bronze (Raw / Landing)
+Source Systems: 
+    - CRM (Customer Relationship Management)
+    - ERP (Enterprise Resource Planning)
+
+Usage:
+    - Execute this script to reset the Bronze layer structure.
+    - Caution: Running this script will truncate/drop existing raw data.
+===============================================================================
+*/
+
 USE DataWarehouse;
+
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'bronze')
+BEGIN
+    EXEC('CREATE SCHEMA bronze');
+END
+GO
 
 IF OBJECT_ID ('bronze.crm_cust_info','U') IS NOT NULL
 	DROP TABLE bronze.crm_cust_info;
@@ -9,7 +35,7 @@ CREATE TABLE bronze.crm_cust_info(
 	cst_key            VARCHAR(50),
 	cst_firstname      VARCHAR(50),
 	cst_lastname       VARCHAR(50),
-	cst_marital_status VARCHAR(50),
+	cst_material_status VARCHAR(50),
 	cst_gender         VARCHAR(50),
 	cst_create_date    DATE
 );
