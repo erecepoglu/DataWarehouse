@@ -3,13 +3,28 @@
 Stored Procedure: Load Bronze Layer (Source to Bronze)
 ===============================================================================
 Script Purpose:
+    This stored procedure loads data into the 'Bronze' schema from external CSV files. 
+    It performs a 'Truncate and Load' strategy to ensure the Bronze layer 
+    always contains the most recent snapshot of the source data.
     This stored procedure loads data into the 'Bronze' schema using UNC paths.
-    It performs a 'Truncate and Load' strategy for CRM and ERP source systems.
+
+
+Parameters:
+    None
+
+Data Flow:
+    1. Truncate existing Bronze tables.
+    2. Bulk Insert data from flat files (.csv) into Bronze tables.
+    3. Log execution time and status for each table and the entire batch.
 
 Usage:
     EXEC bronze.load_bronze;
+
+Monitoring:
+    Check the 'Messages' tab in SSMS for real-time load durations and error details.
 ===============================================================================
 */
+
 CREATE OR ALTER PROCEDURE bronze.load_bronze AS 
 BEGIN
     DECLARE @start_time DATETIME, @end_time DATETIME, @batch_start_time DATETIME, @batch_end_time DATETIME;
